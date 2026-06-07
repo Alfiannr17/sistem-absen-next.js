@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -10,11 +10,11 @@ export default function RegisterPage() {
   const supabase = createClient()
   
   const [loading, setLoading] = useState(false)
-  const [role, setRole] = useState<Role>('mahasiswa')
+  const role: Role = 'mahasiswa'
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState('')
   const [formData, setFormData] = useState({
-    name: '', email: '', password: '', nim: '', nidn: ''
+    name: '', email: '', password: '', nim: ''
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,10 +29,10 @@ export default function RegisterPage() {
     
     const profilePayload = {
       name: formData.name.trim(),
-      role,
+      role: 'mahasiswa',
       email: formData.email.trim(),
-      nim: role === 'mahasiswa' ? formData.nim.trim() : null,
-      nidn: role === 'dosen' ? formData.nidn.trim() : null,
+      nim: formData.nim.trim(),
+      nidn: null,
     }
 
     const { data, error } = await supabase.auth.signUp({
@@ -77,22 +77,9 @@ export default function RegisterPage() {
         </div>
         
         <form onSubmit={handleRegister} className="flex flex-col gap-5">
-          <div className="grid grid-cols-2 gap-2 rounded-xl border border-[var(--line)] bg-[var(--panel-muted)] p-1.5">
-            {(['mahasiswa', 'dosen'] as Role[]).map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setRole(item)}
-                className={`rounded-lg px-3 py-2.5 text-sm font-bold transition-all ${
-                  role === item
-                    ? 'bg-blue-600 text-white'
-                    : 'text-[var(--muted)] hover:text-[var(--foreground)]'
-                }`}
-              >
-                {item === 'mahasiswa' ? 'Mahasiswa' : 'Dosen'}
-              </button>
-            ))}
-          </div>
+          <p className="mt-2 text-sm text-[var(--muted)]">
+            Pendaftaran akun mahasiswa.
+          </p>
 
           <label className="space-y-1.5 text-sm font-semibold">
             <span>Nama Lengkap</span>
@@ -100,8 +87,17 @@ export default function RegisterPage() {
           </label>
 
           <label className="space-y-1.5 text-sm font-semibold">
-            <span>{role === 'mahasiswa' ? 'NIM' : 'NIDN'}</span>
-            <input type="text" name={role === 'mahasiswa' ? 'nim' : 'nidn'} placeholder={role === 'mahasiswa' ? 'Nomor Induk Mahasiswa' : 'Nomor Induk Dosen Nasional'} value={role === 'mahasiswa' ? formData.nim : formData.nidn} onChange={handleChange} required className="w-full rounded-xl border border-[var(--line)] bg-[var(--panel-muted)] p-3.5 outline-none transition focus:border-blue-500 focus:bg-[var(--panel)] focus:ring-2 focus:ring-blue-500/20" />
+            <span>NIM</span>
+
+            <input
+              type="text"
+              name="nim"
+              placeholder="Nomor Induk Mahasiswa"
+              value={formData.nim}
+              onChange={handleChange}
+              required
+              className="w-full rounded-xl border border-[var(--line)] bg-[var(--panel-muted)] p-3.5 outline-none transition focus:border-blue-500 focus:bg-[var(--panel)] focus:ring-2 focus:ring-blue-500/20"
+            />
           </label>
 
           <label className="space-y-1.5 text-sm font-semibold">
