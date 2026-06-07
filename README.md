@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sistem Absensi Kampus
 
-## Getting Started
+Aplikasi absensi berbasis Next.js dan Supabase untuk dua role:
 
-First, run the development server:
+- Mahasiswa: register, login, gabung kelas memakai kode, absen satu klik, melihat riwayat.
+- Dosen: register, login, membuat kode kelas, membuat pertemuan, mengaktifkan tombol absen per pertemuan, melihat rekap absensi dan data mahasiswa.
+
+## Menjalankan Project
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup Supabase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Buat project Supabase.
+2. Jalankan isi file `supabase-schema.sql` di Supabase SQL Editor. Jalankan ulang file ini jika sebelumnya masih memakai schema lama, karena ada tabel `meetings` dan GRANT permission baru.
+3. Isi file `.env`:
 
-## Learn More
+```env
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Rute Utama
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/register` untuk daftar mahasiswa atau dosen.
+- `/login` untuk masuk.
+- `/dosen/dashboard` untuk ringkasan dan membuat kelas.
+- `/dosen/kelas` untuk mengelola seluruh kelas.
+- `/dosen/jadwal` untuk melihat agenda pertemuan.
+- `/dosen/rekap` untuk melihat dan mengunduh rekap keseluruhan.
+- `/dosen/profile` untuk mengelola profil dosen.
+- `/mahasiswa/dashboard` untuk ringkasan dan bergabung ke kelas.
+- `/mahasiswa/kelas` untuk mengakses seluruh kelas yang diikuti.
+- `/mahasiswa/jadwal` untuk melihat agenda kuliah mendatang.
+- `/mahasiswa/riwayat` untuk melihat catatan kehadiran.
+- `/mahasiswa/profile` untuk mengelola profil mahasiswa.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Portal dosen dan mahasiswa memakai sidebar pada desktop serta bottom navigation pada perangkat mobile.
 
-## Deploy on Vercel
+## Alur Absensi
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Dosen membuat kelas dan membagikan kode kelas.
+2. Mahasiswa bergabung ke kelas memakai kode tersebut.
+3. Dosen membuka detail kelas, membuat pertemuan, lalu menekan `Aktifkan`.
+4. Mahasiswa membuka kelas dan klik tombol hadir saat pertemuan aktif dan jam absen berjalan.
+5. Dosen melihat rekap per pertemuan dan data mahasiswa per kelas.
