@@ -73,13 +73,11 @@ export default function RegisterPage() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold">Daftar Akun</h1>
-          <p className="mt-2 text-sm text-[var(--muted)]">Pilih role sesuai status kamu saat ini.</p>
+          <p className="mt-2 text-sm text-[var(--muted)]">Pendaftaran akun mahasiswa.</p>
         </div>
         
         <form onSubmit={handleRegister} className="flex flex-col gap-5">
-          <p className="mt-2 text-sm text-[var(--muted)]">
-            Pendaftaran akun mahasiswa.
-          </p>
+          
 
           <label className="space-y-1.5 text-sm font-semibold">
             <span>Nama Lengkap</span>
